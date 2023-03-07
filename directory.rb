@@ -1,3 +1,5 @@
+students_count = 11
+
 puts "The students of Villains Academy"
 puts "-----------"
 puts "Dr. Hannibal Lecter"
@@ -13,6 +15,4 @@ puts "Joffrey Baratheon"
 puts "Norman Bates"
 
 #printing the total number of students
-print "Overall, we have "
-print 11
-puts " great students"
+print "Overall, we have #{students_count} great students"
