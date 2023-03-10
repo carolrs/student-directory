@@ -4,17 +4,17 @@ def input_students
 
   while true do
     puts "Enter a name"
-    name = gets.chomp
+    name = STDIN.gets
 
     if name.empty?
       break
     end
     puts "Enter the cohort"
-    cohort = gets.chomp
+    cohort = STDIN.gets
     puts "Enter the age"
-    age = gets.chomp
+    age = STDIN.gets
     puts "Hobbies:"
-    hobbie = gets.chomp
+    hobbie = STDIN.gets
 
     if cohort.empty?
       @students << create_student_hash(name,age,hobbie)
@@ -93,13 +93,25 @@ def save_students
   file.close
 end
 
-def load_students
-  file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+  file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym}
   end
   file.close
+end
+
+def try_load_students
+  filename = ARGV.first 
+  return if filename.nil? #get out of the meth. if it isn't given
+  if File.exist?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry #{filename} does not exist"
+    exit #quit the program
+  end
 end
 
 def process(selection)
@@ -122,13 +134,8 @@ end
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
-end
-
-def print_footer()
-#printing the total number of students
-  puts "Overall, we have #{@students.count} great students"
 end
 
 def print_footer
@@ -136,9 +143,6 @@ def print_footer
   puts "Overall, we have #{@students .count} great students"
 end
 @students = []
-#input_students
-#print_header
+
+try_load_students
 interactive_menu
-#print_students
-#students_by_cohort = group_by_cohort
-#print_footer
